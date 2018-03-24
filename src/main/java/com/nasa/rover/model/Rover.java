@@ -36,8 +36,8 @@ public class Rover {
 
         Rover actual = (Rover) obj;
 
-        return getPosition() == actual.getPosition()
-                && getOrientation() == actual.getOrientation();
+        return getPosition().equals(actual.getPosition())
+                && getOrientation().equals(actual.getOrientation());
     }
 
     @Override
