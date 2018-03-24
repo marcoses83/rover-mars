@@ -1,5 +1,7 @@
 package com.nasa.rover.api;
 
+import com.nasa.rover.helper.CommandParser;
+import com.nasa.rover.model.Rover;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Launcher;
 import io.vertx.core.http.HttpServerResponse;
@@ -20,11 +22,6 @@ public class Server extends AbstractVerticle {
         router.get("/commands/:commandSequence").handler(this::handleGetProduct);
 
         vertx.createHttpServer()
-//                .requestHandler(req -> {
-//                    req.response()
-//                            .putHeader("content-type", "text/plain")
-//                            .end("Hello from Vert.x!");
-//                })
                 .requestHandler(router::accept)
                 .listen(8080);
     }
@@ -36,12 +33,12 @@ public class Server extends AbstractVerticle {
             sendError(400, response);
         } else {
             //TODO: parse commands
-            String commandList = commandSequence;
+            Rover rover = new CommandParser().parse(commandSequence);
 
-            if (commandList == null) {
+            if (rover == null) {
                 sendError(404, response);
             } else {
-                response.putHeader("content-type", "application/json").setStatusCode(200).end(commandList);
+                response.putHeader("content-type", "application/json").setStatusCode(200).end(rover.getPosition().toString());
             }
         }
     }
