@@ -10,10 +10,11 @@ import java.util.stream.IntStream;
 public class CommandParser {
     public Rover parse(String commandSequence) {
         Rover rover = null;
+        String commands = commandSequence.toUpperCase();
 
-        if (validate(commandSequence)) {
-            rover = new Rover(getPosition(commandSequence),
-                    Orientation.getName(commandSequence.charAt(2)));
+        if (validate(commands)) {
+            rover = new Rover(getPosition(commands),
+                    Orientation.getName(commands.charAt(2)));
         }
 
         return rover;

@@ -1,4 +1,4 @@
-package com.nasa.rover.test.helper;
+package com.nasa.rover.test.unit.helper;
 
 import com.nasa.rover.helper.CommandParser;
 import com.nasa.rover.model.Position;
@@ -11,7 +11,17 @@ import static org.junit.Assert.assertTrue;
 public class CommandParserTest {
     @Test
     public void parseShouldReturnRoverInstanceWhenValidPositionOrientationMovement() {
-        String command = "21NFFRFRFFLF";
+        String command = "21NFFRBRFFLF";
+        Rover expectedRover = new Rover(new Position(2, 1), Orientation.NORTH);
+
+        Rover result = new CommandParser().parse(command);
+
+        assertTrue(result.equals(expectedRover));
+    }
+
+    @Test
+    public void parseShouldReturnRoverInstanceWhenLowercase() {
+        String command = "21nFFRbRFFlF";
         Rover expectedRover = new Rover(new Position(2, 1), Orientation.NORTH);
 
         Rover result = new CommandParser().parse(command);
@@ -31,7 +41,7 @@ public class CommandParserTest {
 
     @Test
     public void parseShouldReturnNullWhenXPositionNotValid() {
-        String command = "X1NFFRFRFFLF";
+        String command = "X1NFFRBRFFLF";
 
         Rover result = new CommandParser().parse(command);
 
@@ -40,7 +50,7 @@ public class CommandParserTest {
 
     @Test
     public void parseShouldReturnNullWhenYPositionNotValid() {
-        String command = "2YNFFRFRFFLF";
+        String command = "2YNFFRBRFFLF";
 
         Rover result = new CommandParser().parse(command);
 
@@ -49,7 +59,7 @@ public class CommandParserTest {
 
     @Test
     public void parseShouldReturnNullWhenOrientationNotValid() {
-        String command = "21XFFRFRFFLF";
+        String command = "21XFFRBRFFLF";
 
         Rover result = new CommandParser().parse(command);
 
