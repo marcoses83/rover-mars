@@ -13,21 +13,13 @@ public class Position {
         this.y = y;
     }
 
-    public int getX() {
-        return x;
-    }
+    public void increaseX() { x++; }
 
-    public void setX(int x) {
-        this.x = x;
-    }
+    public void decreaseX() { x--; }
 
-    public int getY() {
-        return y;
-    }
+    public void increaseY() { y++; }
 
-    public void setY(int y) {
-        this.y = y;
-    }
+    public void decreaseY() { y--; }
 
     @Override
     public String toString() {
@@ -42,8 +34,8 @@ public class Position {
 
         Position actual = (Position) obj;
 
-        return getX() == actual.getX()
-                && getY() == actual.getY();
+        return x == actual.x
+                && y == actual.y;
     }
 
     @Override
