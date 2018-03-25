@@ -20,14 +20,14 @@ public class Server extends AbstractVerticle {
         Router router = Router.router(vertx);
 
         router.route().handler(BodyHandler.create());
-        router.post("/rover/commands/:commandSequence").handler(this::handleGetProduct);
+        router.post("/rover/commands/:commandSequence").handler(this::handlePostCommandSequence);
 
         vertx.createHttpServer()
                 .requestHandler(router::accept)
                 .listen(8080);
     }
 
-    private void handleGetProduct(RoutingContext routingContext) {
+    private void handlePostCommandSequence(RoutingContext routingContext) {
         String commandSequence = routingContext.request().getParam("commandSequence");
         HttpServerResponse response = routingContext.response();
         if (commandSequence == null) {
