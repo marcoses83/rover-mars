@@ -11,10 +11,10 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 
-public class Server extends AbstractVerticle {
+public class RestVerticle extends AbstractVerticle {
     private Rover rover;
     public static void main(String[] args) {
-        Launcher.executeCommand("run", Server.class.getName());
+        Launcher.executeCommand("run", RestVerticle.class.getName());
     }
 
     @Override
