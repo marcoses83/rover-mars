@@ -1,5 +1,6 @@
 package com.nasa.rover.api;
 
+import com.google.gson.Gson;
 import com.nasa.rover.helper.CommandParser;
 import com.nasa.rover.model.Rover;
 import io.vertx.core.AbstractVerticle;
@@ -19,7 +20,7 @@ public class Server extends AbstractVerticle {
         Router router = Router.router(vertx);
 
         router.route().handler(BodyHandler.create());
-        router.get("/commands/:commandSequence").handler(this::handleGetProduct);
+        router.post("/rover/commands/:commandSequence").handler(this::handleGetProduct);
 
         vertx.createHttpServer()
                 .requestHandler(router::accept)
@@ -32,13 +33,14 @@ public class Server extends AbstractVerticle {
         if (commandSequence == null) {
             sendError(400, response);
         } else {
-            //TODO: parse commands
             Rover rover = new CommandParser().parse(commandSequence);
 
             if (rover == null) {
                 sendError(404, response);
             } else {
-                response.putHeader("content-type", "application/json").setStatusCode(200).end(rover.getPosition().toString());
+                //TODO: improve
+                rover.move(commandSequence.substring(3));
+                response.putHeader("content-type", "application/json").setStatusCode(200).end(new Gson().toJson(rover));
             }
         }
     }
