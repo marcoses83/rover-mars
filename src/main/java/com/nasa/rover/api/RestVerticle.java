@@ -33,10 +33,10 @@ public class RestVerticle extends AbstractVerticle {
 
     private void handleGetRover(RoutingContext routingContext) {
         HttpServerResponse response = routingContext.response();
-        if (rover != null) {
+        if (this.rover != null) {
             response.putHeader("content-type", "application/json").setStatusCode(200).end(new Gson().toJson(this.rover));
         } else {
-            sendError(404, response);
+            sendError(response, 404, "Rover is not initialized.");
         }
     }
 
@@ -45,13 +45,12 @@ public class RestVerticle extends AbstractVerticle {
         HttpServerResponse response = routingContext.response();
 
         if (command == null || command.length() != 1 || Movement.getName(command.charAt(0)) == null) {
-            sendError(400, response);
+            sendError(response, 400, "Invalid command.");
         } else {
             if (this.rover == null) {
-                sendError(404, response);
+                sendError(response, 404, "Rover is not initialized.");
             } else {
-                //TODO: improve. Move CommandParser usage inside Rover class
-                rover.move(command);
+                this.rover.move(command);
                 response.putHeader("content-type", "application/json").setStatusCode(200).end(new Gson().toJson(this.rover));
             }
         }
@@ -62,22 +61,20 @@ public class RestVerticle extends AbstractVerticle {
         HttpServerResponse response = routingContext.response();
 
         if (commandSequence == null) {
-            sendError(400, response);
+            sendError(response, 400, "Command sequence is empty.");
         } else {
-            //TODO: improve. Move CommandParser usage inside Rover class
             this.rover = new CommandParser().parse(commandSequence);
 
             if (this.rover == null) {
-                sendError(400, response);
+                sendError(response, 404, "Invalid command.");
             } else {
-                //TODO: improve. Move CommandParser usage inside Rover class
                 rover.move(commandSequence.substring(3));
                 response.putHeader("content-type", "application/json").setStatusCode(200).end(new Gson().toJson(this.rover));
             }
         }
     }
 
-    private void sendError(int statusCode, HttpServerResponse response) {
-        response.setStatusCode(statusCode).end();
+    private void sendError(HttpServerResponse response, int statusCode, String message) {
+        response.setStatusCode(statusCode).end(message);
     }
 }
