@@ -33,8 +33,8 @@ public class RestVerticle extends AbstractVerticle {
 
     private void handleGetRover(RoutingContext routingContext) {
         HttpServerResponse response = routingContext.response();
-        if (this.rover != null) {
-            response.putHeader("content-type", "application/json").setStatusCode(200).end(new Gson().toJson(this.rover));
+        if (rover != null) {
+            response.putHeader("content-type", "application/json").setStatusCode(200).end(new Gson().toJson(rover));
         } else {
             sendError(response, 404, "Rover is not initialized.");
         }
@@ -47,11 +47,11 @@ public class RestVerticle extends AbstractVerticle {
         if (command == null || command.length() != 1 || Movement.getName(command.charAt(0)) == null) {
             sendError(response, 400, "Invalid command.");
         } else {
-            if (this.rover == null) {
+            if (rover == null) {
                 sendError(response, 404, "Rover is not initialized.");
             } else {
-                this.rover.move(command);
-                response.putHeader("content-type", "application/json").setStatusCode(200).end(new Gson().toJson(this.rover));
+                rover.move(command);
+                response.putHeader("content-type", "application/json").setStatusCode(200).end(new Gson().toJson(rover));
             }
         }
     }
@@ -63,13 +63,13 @@ public class RestVerticle extends AbstractVerticle {
         if (commandSequence == null) {
             sendError(response, 400, "Command sequence is empty.");
         } else {
-            this.rover = new CommandParser().parse(commandSequence);
+            rover = new CommandParser().parse(commandSequence);
 
-            if (this.rover == null) {
+            if (rover == null) {
                 sendError(response, 404, "Invalid command.");
             } else {
                 rover.move(commandSequence.substring(3));
-                response.putHeader("content-type", "application/json").setStatusCode(200).end(new Gson().toJson(this.rover));
+                response.putHeader("content-type", "application/json").setStatusCode(200).end(new Gson().toJson(rover));
             }
         }
     }

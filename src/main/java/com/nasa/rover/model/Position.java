@@ -1,7 +1,5 @@
 package com.nasa.rover.model;
 
-import com.nasa.rover.model.enums.Orientation;
-
 import java.util.Objects;
 
 public class Position {
@@ -23,8 +21,8 @@ public class Position {
 
     @Override
     public String toString() {
-        return String.valueOf(this.x)
-                + String.valueOf(this.y);
+        return String.valueOf(x)
+                + String.valueOf(y);
     }
 
     @Override
