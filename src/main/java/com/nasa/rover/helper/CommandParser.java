@@ -3,7 +3,7 @@ package com.nasa.rover.helper;
 import com.nasa.rover.model.Position;
 import com.nasa.rover.model.Rover;
 import com.nasa.rover.model.enums.Movement;
-import com.nasa.rover.model.enums.Orientation;
+import com.nasa.rover.model.enums.CardinalPoint;
 
 import java.util.stream.IntStream;
 
@@ -14,7 +14,7 @@ public class CommandParser {
 
         if (validate(commands)) {
             rover = new Rover(getPosition(commands),
-                    Orientation.getName(commands.charAt(2)));
+                    CardinalPoint.getName(commands.charAt(2)));
         }
 
         return rover;
@@ -29,7 +29,7 @@ public class CommandParser {
         return commandSequence.length() > 2
                 && Character.isDigit(commandSequence.charAt(0))
                 && Character.isDigit(commandSequence.charAt(1))
-                && Orientation.getValues().contains(commandSequence.charAt(2))
+                && CardinalPoint.getValues().contains(commandSequence.charAt(2))
                 && IntStream
                     .range(3, commandSequence.length())
                     .allMatch(i -> Movement.getValues().contains(commandSequence.charAt(i)));

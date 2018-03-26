@@ -3,40 +3,41 @@ package com.nasa.rover.test.unit.helper;
 import com.nasa.rover.helper.CommandParser;
 import com.nasa.rover.model.Position;
 import com.nasa.rover.model.Rover;
-import com.nasa.rover.model.enums.Orientation;
+import com.nasa.rover.model.enums.CardinalPoint;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class CommandParserTest {
     @Test
     public void parseShouldReturnRoverInstanceWhenValidPositionOrientationMovement() {
         String command = "21NFFRBRFFLF";
-        Rover expectedRover = new Rover(new Position(2, 1), Orientation.NORTH);
+        Rover expectedRover = new Rover(new Position(2, 1), CardinalPoint.NORTH);
 
         Rover result = new CommandParser().parse(command);
 
-        assertTrue(result.equals(expectedRover));
+        assertEquals(expectedRover, result);
     }
 
     @Test
     public void parseShouldReturnRoverInstanceWhenLowercase() {
         String command = "21nFFRbRFFlF";
-        Rover expectedRover = new Rover(new Position(2, 1), Orientation.NORTH);
+        Rover expectedRover = new Rover(new Position(2, 1), CardinalPoint.NORTH);
 
         Rover result = new CommandParser().parse(command);
 
-        assertTrue(result.equals(expectedRover));
+        assertEquals(expectedRover, result);
     }
 
     @Test
     public void parseShouldReturnRoverInstanceWhenNoMovement() {
         String command = "21N";
-        Rover expectedRover = new Rover(new Position(2, 1), Orientation.NORTH);
+        Rover expectedRover = new Rover(new Position(2, 1), CardinalPoint.NORTH);
 
         Rover result = new CommandParser().parse(command);
 
-        assertTrue(result.equals(expectedRover));
+        assertEquals(expectedRover, result);
     }
 
     @Test
@@ -45,7 +46,7 @@ public class CommandParserTest {
 
         Rover result = new CommandParser().parse(command);
 
-        assertTrue(result == null);
+        assertNull(result);
     }
 
     @Test
@@ -54,7 +55,7 @@ public class CommandParserTest {
 
         Rover result = new CommandParser().parse(command);
 
-        assertTrue(result == null);
+        assertNull(result);
     }
 
     @Test
@@ -63,6 +64,6 @@ public class CommandParserTest {
 
         Rover result = new CommandParser().parse(command);
 
-        assertTrue(result == null);
+        assertNull(result);
     }
 }
