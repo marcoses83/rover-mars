@@ -2,12 +2,18 @@ package com.nasa.rover.helper;
 
 import com.nasa.rover.model.Position;
 import com.nasa.rover.model.Rover;
-import com.nasa.rover.model.enums.Movement;
 import com.nasa.rover.model.enums.CardinalPoint;
+import com.nasa.rover.model.enums.Movement;
 
 import java.util.stream.IntStream;
 
 public class CommandParser {
+    private INavigator navigator;
+
+    public CommandParser(INavigator navigator) {
+        this.navigator = navigator;
+    }
+
     public Rover parse(String commandSequence) {
         Rover rover = null;
         String commands = commandSequence.toUpperCase();
@@ -15,7 +21,7 @@ public class CommandParser {
         if (validate(commands)) {
             rover = new Rover(getPosition(commands),
                     CardinalPoint.getName(commands.charAt(2)),
-                    new Navigator()); //TODO: consider injecting
+                    navigator);
         }
 
         return rover;

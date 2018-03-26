@@ -2,10 +2,14 @@ package com.nasa.rover.api;
 
 import com.google.gson.Gson;
 import com.nasa.rover.helper.CommandParser;
+import com.nasa.rover.helper.INavigator;
+import com.nasa.rover.helper.Navigator;
 import com.nasa.rover.model.Rover;
 import com.nasa.rover.model.enums.Movement;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Context;
 import io.vertx.core.Launcher;
+import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
@@ -13,8 +17,16 @@ import io.vertx.ext.web.handler.BodyHandler;
 
 public class RestVerticle extends AbstractVerticle {
     private Rover rover;
+    private INavigator navigator;
+
     public static void main(String[] args) {
         Launcher.executeCommand("run", RestVerticle.class.getName());
+    }
+
+    @Override
+    public void init(Vertx vertx, Context context) {
+        super.init(vertx, context);
+        navigator = new Navigator();
     }
 
     @Override
@@ -63,7 +75,7 @@ public class RestVerticle extends AbstractVerticle {
         if (commandSequence == null) {
             sendError(response, 400, "Command sequence is empty.");
         } else {
-            rover = new CommandParser().parse(commandSequence);
+            rover = new CommandParser(navigator).parse(commandSequence);
 
             if (rover == null) {
                 sendError(response, 404, "Invalid command.");
