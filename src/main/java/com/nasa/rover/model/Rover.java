@@ -1,6 +1,6 @@
 package com.nasa.rover.model;
 
-import com.nasa.rover.helper.Navigator;
+import com.nasa.rover.helper.INavigator;
 import com.nasa.rover.model.enums.CardinalPoint;
 import com.nasa.rover.model.enums.Movement;
 
@@ -9,12 +9,12 @@ import java.util.Objects;
 public class Rover {
     private Position position;
     private CardinalPoint orientation;
-    private Navigator navigator;
+    private INavigator navigator;
 
-    public Rover(Position position, CardinalPoint orientation) {
+    public Rover(Position position, CardinalPoint orientation, INavigator navigator) {
         this.position = position;
         this.orientation = orientation;
-        this.navigator = new Navigator();
+        this.navigator = navigator;
     }
 
     public void move(String movements) {

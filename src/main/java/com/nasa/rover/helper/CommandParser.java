@@ -14,7 +14,8 @@ public class CommandParser {
 
         if (validate(commands)) {
             rover = new Rover(getPosition(commands),
-                    CardinalPoint.getName(commands.charAt(2)));
+                    CardinalPoint.getName(commands.charAt(2)),
+                    new Navigator()); //TODO: consider injecting
         }
 
         return rover;

@@ -1,6 +1,7 @@
 package com.nasa.rover.test.unit.helper;
 
 import com.nasa.rover.helper.CommandParser;
+import com.nasa.rover.helper.Navigator;
 import com.nasa.rover.model.Position;
 import com.nasa.rover.model.Rover;
 import com.nasa.rover.model.enums.CardinalPoint;
@@ -13,7 +14,7 @@ public class CommandParserTest {
     @Test
     public void parseShouldReturnRoverInstanceWhenValidPositionOrientationMovement() {
         String command = "21NFFRBRFFLF";
-        Rover expectedRover = new Rover(new Position(2, 1), CardinalPoint.NORTH);
+        Rover expectedRover = new Rover(new Position(2, 1), CardinalPoint.NORTH, new Navigator());
 
         Rover result = new CommandParser().parse(command);
 
@@ -23,7 +24,7 @@ public class CommandParserTest {
     @Test
     public void parseShouldReturnRoverInstanceWhenLowercase() {
         String command = "21nFFRbRFFlF";
-        Rover expectedRover = new Rover(new Position(2, 1), CardinalPoint.NORTH);
+        Rover expectedRover = new Rover(new Position(2, 1), CardinalPoint.NORTH, new Navigator());
 
         Rover result = new CommandParser().parse(command);
 
@@ -33,7 +34,7 @@ public class CommandParserTest {
     @Test
     public void parseShouldReturnRoverInstanceWhenNoMovement() {
         String command = "21N";
-        Rover expectedRover = new Rover(new Position(2, 1), CardinalPoint.NORTH);
+        Rover expectedRover = new Rover(new Position(2, 1), CardinalPoint.NORTH, new Navigator());
 
         Rover result = new CommandParser().parse(command);
 
