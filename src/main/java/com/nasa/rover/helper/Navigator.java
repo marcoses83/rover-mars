@@ -24,18 +24,20 @@ public class Navigator implements INavigator {
     }
 
     public void moveForward(Position currentPosition, CardinalPoint currentOrientation) {
-        //TODO
-        if (currentOrientation.equals(CardinalPoint.NORTH)) currentPosition.increaseY();
-        else if (currentOrientation.equals(CardinalPoint.EAST)) currentPosition.increaseX();
-        else if (currentOrientation.equals(CardinalPoint.SOUTH)) currentPosition.decreaseY();
-        else if (currentOrientation.equals(CardinalPoint.WEST)) currentPosition.decreaseX();
+        switch (currentOrientation) {
+            case NORTH: currentPosition.increaseY(); break;
+            case EAST: currentPosition.increaseX(); break;
+            case SOUTH: currentPosition.decreaseY(); break;
+            case WEST: currentPosition.decreaseX(); break;
+        }
     }
 
     public void moveBackward(Position currentPosition, CardinalPoint currentOrientation) {
-        //TODO
-        if (currentOrientation.equals(CardinalPoint.NORTH)) currentPosition.decreaseY();
-        else if (currentOrientation.equals(CardinalPoint.EAST)) currentPosition.decreaseX();
-        else if (currentOrientation.equals(CardinalPoint.SOUTH)) currentPosition.increaseY();
-        else if (currentOrientation.equals(CardinalPoint.WEST)) currentPosition.increaseX();
+        switch (currentOrientation) {
+            case NORTH: currentPosition.decreaseY(); break;
+            case EAST: currentPosition.decreaseX(); break;
+            case SOUTH: currentPosition.increaseY(); break;
+            case WEST: currentPosition.increaseX(); break;
+        }
     }
 }
