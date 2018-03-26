@@ -4,7 +4,7 @@ import com.nasa.rover.model.Position;
 import com.nasa.rover.model.enums.CardinalPoint;
 import com.nasa.rover.util.CircularArrayList;
 
-public class Navigator {
+public class Navigator implements INavigator {
     private CircularArrayList<CardinalPoint> orientationList;
 
     public Navigator() {
