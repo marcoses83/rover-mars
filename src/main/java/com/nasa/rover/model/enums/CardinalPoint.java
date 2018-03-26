@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public enum Orientation {
+public enum CardinalPoint {
     NORTH('N'),
     SOUTH('S'),
     EAST('E'),
@@ -12,7 +12,7 @@ public enum Orientation {
 
     private char value;
 
-    Orientation(char value) {
+    CardinalPoint(char value) {
         this.value = value;
     }
 
@@ -20,17 +20,17 @@ public enum Orientation {
         return value;
     }
 
-    public static Orientation getName(char value) {
-        for (Orientation orientation : Orientation.values())
-            if (orientation.value == value)
-                return orientation;
+    public static CardinalPoint getName(char value) {
+        for (CardinalPoint cardinalPoint : CardinalPoint.values())
+            if (cardinalPoint.value == value)
+                return cardinalPoint;
 
         return null;
     }
 
     public static List<Character> getValues() {
-        return Arrays.stream(Orientation.values())
-                .map(Orientation::getValue)
+        return Arrays.stream(CardinalPoint.values())
+                .map(CardinalPoint::getValue)
                 .collect(Collectors.toList());
     }
 }
