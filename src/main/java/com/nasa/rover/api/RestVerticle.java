@@ -1,9 +1,9 @@
 package com.nasa.rover.api;
 
 import com.google.gson.Gson;
-import com.nasa.rover.helper.CommandParser;
-import com.nasa.rover.helper.INavigator;
-import com.nasa.rover.helper.Navigator;
+import com.nasa.rover.service.CommandParser;
+import com.nasa.rover.service.INavigator;
+import com.nasa.rover.service.Navigator;
 import com.nasa.rover.model.Rover;
 import com.nasa.rover.model.enums.Movement;
 import io.vertx.core.AbstractVerticle;
