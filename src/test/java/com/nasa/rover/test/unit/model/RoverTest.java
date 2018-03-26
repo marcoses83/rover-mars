@@ -1,6 +1,6 @@
 package com.nasa.rover.test.unit.model;
 
-import com.nasa.rover.helper.INavigator;
+import com.nasa.rover.service.INavigator;
 import com.nasa.rover.model.Position;
 import com.nasa.rover.model.Rover;
 import com.nasa.rover.model.enums.CardinalPoint;
