@@ -1,58 +1,33 @@
 package com.nasa.rover.model;
 
+import com.nasa.rover.helper.Navigator;
+import com.nasa.rover.model.enums.CardinalPoint;
 import com.nasa.rover.model.enums.Movement;
-import com.nasa.rover.model.enums.Orientation;
 
 import java.util.Objects;
 
 public class Rover {
     private Position position;
-    private Orientation orientation;
+    private CardinalPoint orientation;
+    private Navigator navigator;
 
-    public Rover(Position position, Orientation orientation) {
+    public Rover(Position position, CardinalPoint orientation) {
         this.position = position;
         this.orientation = orientation;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
-    public Orientation getOrientation() {
-        return orientation;
-    }
-
-    public void setOrientation(Orientation orientation) {
-        this.orientation = orientation;
+        this.navigator = new Navigator();
     }
 
     public void move(String movements) {
         movements.chars().forEach(movement ->
         {
             if (movement == Movement.BACKWARD.getValue()) {
-                if (orientation.equals(Orientation.NORTH)) position.decreaseY();
-                else if (orientation.equals(Orientation.EAST)) position.decreaseX();
-                else if (orientation.equals(Orientation.SOUTH)) position.increaseY();
-                else if (orientation.equals(Orientation.WEST)) position.increaseX();
+                navigator.moveBackward(position, orientation);
             } else if (movement == Movement.FORWARD.getValue()) {
-                if (orientation.equals(Orientation.NORTH)) position.increaseY();
-                else if (orientation.equals(Orientation.EAST)) position.increaseX();
-                else if (orientation.equals(Orientation.SOUTH)) position.decreaseY();
-                else if (orientation.equals(Orientation.WEST)) position.decreaseX();
+                navigator.moveForward(position, orientation);
             } else if (movement == Movement.LEFT.getValue()) {
-                if (orientation.equals(Orientation.NORTH)) orientation = Orientation.WEST;
-                else if (orientation.equals(Orientation.EAST)) orientation = Orientation.NORTH;
-                else if (orientation.equals(Orientation.SOUTH)) orientation = Orientation.EAST;
-                else if (orientation.equals(Orientation.WEST)) orientation = Orientation.SOUTH;
+                orientation = navigator.rotateLeft(orientation);
             } else if (movement == Movement.RIGHT.getValue()) {
-                if (orientation.equals(Orientation.NORTH)) orientation = Orientation.EAST;
-                else if (orientation.equals(Orientation.EAST)) orientation = Orientation.SOUTH;
-                else if (orientation.equals(Orientation.SOUTH)) orientation = Orientation.WEST;
-                else if (orientation.equals(Orientation.WEST)) orientation = Orientation.NORTH;
+                orientation = navigator.rotateRight(orientation);
             }
         });
     }
