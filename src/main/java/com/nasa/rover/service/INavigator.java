@@ -1,4 +1,4 @@
-package com.nasa.rover.helper;
+package com.nasa.rover.service;
 
 import com.nasa.rover.model.Position;
 import com.nasa.rover.model.enums.CardinalPoint;
