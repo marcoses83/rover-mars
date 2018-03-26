@@ -14,7 +14,7 @@ public class CircularArrayList<T> extends ArrayList<T> {
     }
 
     public T getPrevious(int index) {
-        if (index > 0 && index < size() - 1) {
+        if (index > 0 && index < size()) {
             return get(index - 1);
         } else if (index == 0) {
             return get(size() - 1);

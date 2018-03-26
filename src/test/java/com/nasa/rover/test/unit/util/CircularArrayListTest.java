@@ -56,8 +56,8 @@ public class CircularArrayListTest {
 
     @Test
     public void getPreviousShouldReturnIndex2() {
-        Integer result = circularArrayList.getPrevious(3);
-        assertEquals((Integer) 2, result);
+        Integer result = circularArrayList.getPrevious(4);
+        assertEquals((Integer) 3, result);
     }
 
     @Test
