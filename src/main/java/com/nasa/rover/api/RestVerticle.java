@@ -18,6 +18,7 @@ import io.vertx.ext.web.handler.BodyHandler;
 public class RestVerticle extends AbstractVerticle {
     private Rover rover;
     private INavigator navigator;
+    private final Object lock = new Object();
 
     public static void main(String[] args) {
         Launcher.executeCommand("run", RestVerticle.class.getName());
@@ -46,10 +47,13 @@ public class RestVerticle extends AbstractVerticle {
 
     private void handleGetRover(RoutingContext routingContext) {
         HttpServerResponse response = routingContext.response();
-        if (rover != null) {
-            response.putHeader("content-type", "application/json").setStatusCode(200).end(new Gson().toJson(rover));
-        } else {
-            sendError(response, 404, "Rover is not initialized.");
+
+        synchronized (lock) {
+            if (rover != null) {
+                response.putHeader("content-type", "application/json").setStatusCode(200).end(new Gson().toJson(rover));
+            } else {
+                sendError(response, 404, "Rover is not initialized.");
+            }
         }
     }
 
@@ -60,11 +64,13 @@ public class RestVerticle extends AbstractVerticle {
         if (command == null || command.length() != 1 || Movement.getName(command.charAt(0)) == null) {
             sendError(response, 400, "Invalid command.");
         } else {
-            if (rover == null) {
-                sendError(response, 404, "Rover is not initialized.");
-            } else {
-                rover.move(command);
-                response.putHeader("content-type", "application/json").setStatusCode(200).end(new Gson().toJson(rover));
+            synchronized (lock) {
+                if (rover == null) {
+                    sendError(response, 404, "Rover is not initialized.");
+                } else {
+                    rover.move(command);
+                    response.putHeader("content-type", "application/json").setStatusCode(200).end(new Gson().toJson(rover));
+                }
             }
         }
     }
@@ -76,13 +82,15 @@ public class RestVerticle extends AbstractVerticle {
         if (commandSequence == null) {
             sendError(response, 400, "Command sequence is empty.");
         } else {
-            rover = new CommandParser(navigator).parse(commandSequence);
+            synchronized (lock) {
+                rover = new CommandParser(navigator).parse(commandSequence);
 
-            if (rover == null) {
-                sendError(response, 404, "Invalid command.");
-            } else {
-                rover.move(commandSequence.substring(3));
-                response.putHeader("content-type", "application/json").setStatusCode(200).end(new Gson().toJson(rover));
+                if (rover == null) {
+                    sendError(response, 404, "Invalid command.");
+                } else {
+                    rover.move(commandSequence.substring(3));
+                    response.putHeader("content-type", "application/json").setStatusCode(200).end(new Gson().toJson(rover));
+                }
             }
         }
     }
@@ -90,7 +98,9 @@ public class RestVerticle extends AbstractVerticle {
     private void handlePostReset(RoutingContext routingContext) {
         HttpServerResponse response = routingContext.response();
 
-        rover = null;
+        synchronized (lock) {
+            rover = null;
+        }
 
         response.setStatusCode(200).end();
     }
