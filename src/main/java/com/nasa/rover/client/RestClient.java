@@ -16,6 +16,13 @@ public class RestClient {
         this.baseUrl = baseUrl;
     }
 
+    public Response getRover() {
+        return client
+                .target(baseUrl + "/rover")
+                .request(MediaType.APPLICATION_JSON)
+                .get();
+    }
+
     public Response postCommandSequence(String commandSequence) {
         return client
                 .target(baseUrl + "/rover/command/sequence")
@@ -30,10 +37,10 @@ public class RestClient {
                 .post(Entity.entity(command, MediaType.TEXT_PLAIN));
     }
 
-    public Response getRover() {
+    public Response postReset() {
         return client
-                .target(baseUrl + "/rover")
-                .request(MediaType.APPLICATION_JSON)
-                .get();
+                .target(baseUrl + "/rover/reset")
+                .request()
+                .post(null);
     }
 }

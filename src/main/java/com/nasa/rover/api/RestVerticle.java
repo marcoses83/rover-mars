@@ -37,6 +37,7 @@ public class RestVerticle extends AbstractVerticle {
         router.get("/rover").handler(this::handleGetRover);
         router.post("/rover/command").handler(this::handlePostCommand);
         router.post("/rover/command/sequence").handler(this::handlePostCommandSequence);
+        router.post("/rover/reset").handler(this::handlePostReset);
 
         vertx.createHttpServer()
                 .requestHandler(router::accept)
@@ -84,6 +85,14 @@ public class RestVerticle extends AbstractVerticle {
                 response.putHeader("content-type", "application/json").setStatusCode(200).end(new Gson().toJson(rover));
             }
         }
+    }
+
+    private void handlePostReset(RoutingContext routingContext) {
+        HttpServerResponse response = routingContext.response();
+
+        rover = null;
+
+        response.setStatusCode(200).end();
     }
 
     private void sendError(HttpServerResponse response, int statusCode, String message) {

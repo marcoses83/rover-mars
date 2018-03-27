@@ -29,6 +29,24 @@ public class IntegrationTest {
     }
 
     @Test
+    public void getRoverShouldReturnExpectedRover() {
+        client.postCommandSequence("11NF");
+        Rover expectedRover = new Rover(new Position(1, 2), CardinalPoint.NORTH, new Navigator());
+        Response response = client.getRover();
+
+        assertEquals(200, response.getStatus());
+        assertEquals(expectedRover, response.readEntity(Rover.class));
+    }
+
+    @Test
+    public void getRoverShouldReturnStatusCode404WhenRoverNotInitialized() {
+        client.postReset();
+        Response response = client.getRover();
+
+        assertEquals(404, response.getStatus());
+    }
+
+    @Test
     public void postCommandSequenceShouldReturnExpectedRover() {
         Response response = client.postCommandSequence("83WRFFFLFRB");
         Rover expectedRover = new Rover(new Position(7, 5), CardinalPoint.NORTH, new Navigator());
@@ -38,13 +56,13 @@ public class IntegrationTest {
     }
 
     @Test
-    public void postCommandSequenceShouldReturnStatus404WhenEmptyCommand() {
+    public void postCommandSequenceShouldReturnStatusCode404WhenEmptyCommand() {
         Response response = client.postCommandSequence("");
         assertEquals(404, response.getStatus());
     }
 
     @Test
-    public void postCommandSequenceShouldReturnStatus404WhenInvalidCommand() {
+    public void postCommandSequenceShouldReturnStatusCode404WhenInvalidCommand() {
         Response response = client.postCommandSequence("XXX");
         assertEquals(404, response.getStatus());
     }
@@ -60,7 +78,7 @@ public class IntegrationTest {
     }
 
     @Test
-    public void postCommandShouldReturnStatus400WhenEmptyCommand() {
+    public void postCommandShouldReturnStatusCode400WhenEmptyCommand() {
         client.postCommandSequence("11N");
         Response response = client.postCommand("");
 
@@ -68,7 +86,15 @@ public class IntegrationTest {
     }
 
     @Test
-    public void postCommandShouldReturnStatus400WhenInvalidCommand() {
+    public void postCommandShouldReturnStatusCode404WhenRoverNotInitialized() {
+        client.postReset();
+        Response response = client.postCommand("B");
+
+        assertEquals(404, response.getStatus());
+    }
+
+    @Test
+    public void postCommandShouldReturnStatusCode400WhenInvalidCommand() {
         client.postCommandSequence("11N");
         Response response = client.postCommand("RR");
 
@@ -76,12 +102,11 @@ public class IntegrationTest {
     }
 
     @Test
-    public void getRoverShouldReturnExpectedRover() {
-        client.postCommandSequence("11NF");
-        Rover expectedRover = new Rover(new Position(1, 2), CardinalPoint.NORTH, new Navigator());
-        Response response = client.getRover();
-
+    public void postResetShouldReturnResetRover() {
+        Response response = client.postReset();
         assertEquals(200, response.getStatus());
-        assertEquals(expectedRover, response.readEntity(Rover.class));
+
+        response = client.getRover();
+        assertEquals(404, response.getStatus());
     }
 }
