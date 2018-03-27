@@ -1,15 +1,21 @@
 package com.nasa.rover.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.nasa.rover.service.INavigator;
 import com.nasa.rover.model.enums.CardinalPoint;
 import com.nasa.rover.model.enums.Movement;
 
 import java.util.Objects;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Rover {
     private Position position;
     private CardinalPoint orientation;
     private INavigator navigator;
+
+    public Rover() {
+    }
 
     public Rover(Position position, CardinalPoint orientation, INavigator navigator) {
         this.position = position;
@@ -46,5 +52,21 @@ public class Rover {
     @Override
     public int hashCode() {
         return Objects.hash(position, orientation);
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public CardinalPoint getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(CardinalPoint orientation) {
+        this.orientation = orientation;
     }
 }

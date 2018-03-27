@@ -29,12 +29,59 @@ public class IntegrationTest {
     }
 
     @Test
-    public void postCommandSequenceShouldReturnStatus200() {
+    public void postCommandSequenceShouldReturnExpectedRover() {
         Response response = client.postCommandSequence("83WRFFFLFRB");
         Rover expectedRover = new Rover(new Position(7, 5), CardinalPoint.NORTH, new Navigator());
 
         assertEquals(200, response.getStatus());
-        //TODO
-        //assertEquals(expectedRover, response.readEntity(Rover.class));
+        assertEquals(expectedRover, response.readEntity(Rover.class));
+    }
+
+    @Test
+    public void postCommandSequenceShouldReturnStatus404WhenEmptyCommand() {
+        Response response = client.postCommandSequence("");
+        assertEquals(404, response.getStatus());
+    }
+
+    @Test
+    public void postCommandSequenceShouldReturnStatus404WhenInvalidCommand() {
+        Response response = client.postCommandSequence("XXX");
+        assertEquals(404, response.getStatus());
+    }
+
+    @Test
+    public void postCommandShouldReturnExpectedRover() {
+        client.postCommandSequence("11N");
+        Response response = client.postCommand("R");
+        Rover expectedRover = new Rover(new Position(1, 1), CardinalPoint.EAST, new Navigator());
+
+        assertEquals(200, response.getStatus());
+        assertEquals(expectedRover, response.readEntity(Rover.class));
+    }
+
+    @Test
+    public void postCommandShouldReturnStatus400WhenEmptyCommand() {
+        client.postCommandSequence("11N");
+        Response response = client.postCommand("");
+
+        assertEquals(400, response.getStatus());
+    }
+
+    @Test
+    public void postCommandShouldReturnStatus400WhenInvalidCommand() {
+        client.postCommandSequence("11N");
+        Response response = client.postCommand("RR");
+
+        assertEquals(400, response.getStatus());
+    }
+
+    @Test
+    public void getRoverShouldReturnExpectedRover() {
+        client.postCommandSequence("11NF");
+        Rover expectedRover = new Rover(new Position(1, 2), CardinalPoint.NORTH, new Navigator());
+        Response response = client.getRover();
+
+        assertEquals(200, response.getStatus());
+        assertEquals(expectedRover, response.readEntity(Rover.class));
     }
 }

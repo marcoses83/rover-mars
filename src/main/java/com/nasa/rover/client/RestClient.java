@@ -30,10 +30,10 @@ public class RestClient {
                 .post(Entity.entity(command, MediaType.TEXT_PLAIN));
     }
 
-    public Rover getRover() {
+    public Response getRover() {
         return client
                 .target(baseUrl + "/rover")
                 .request(MediaType.APPLICATION_JSON)
-                .get(Rover.class);
+                .get();
     }
 }
