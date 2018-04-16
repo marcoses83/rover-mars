@@ -10,10 +10,15 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Context;
 import io.vertx.core.Launcher;
 import io.vertx.core.Vertx;
+import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.CorsHandler;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class RestVerticle extends AbstractVerticle {
     private Rover rover;
@@ -32,7 +37,15 @@ public class RestVerticle extends AbstractVerticle {
 
     @Override
     public void start() {
+        Set<HttpMethod> allowedMethods = new HashSet<>();
+        allowedMethods.add(HttpMethod.GET);
+        allowedMethods.add(HttpMethod.POST);
+
         Router router = Router.router(vertx);
+
+        router.route().handler(CorsHandler.create("*")
+                                        .allowedHeader("Access-Control-Allow-Headers, Content-Type")
+                                        .allowedMethods(allowedMethods));
 
         router.route().handler(BodyHandler.create());
         router.get("/rover").handler(this::handleGetRover);
