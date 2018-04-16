@@ -1,0 +1,52 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
+  <h2>
+    {{ subtitle }}: {{ counter }}
+  </h2>
+  <div id="roverImageContainer" class="cell">
+    <img width="300" alt="Rover Logo" src="https://cdn.vox-cdn.com/thumbor/9cxzk7NW1wl0ecw97ZEshSuO8w4=/0x0:3000x2400/1820x1213/filters:focal(1217x746:1697x1226):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/58744679/rover3.0.jpg">
+  </div>
+  <div class="cell">
+    <label class="rover-position">Position: {{position}}</label>
+    <label class="rover-position">Orientation: {{orientation}}</label>
+  </div>
+  <div>
+    <label>Position:
+      <input [(ngModel)]="position" placeholder="xy position">
+    </label>
+    <label>Orientation:
+      <input [(ngModel)]="orientation" placeholder="orientation">
+    </label>
+  </div>
+  <div>
+    <label>Command sequence:
+      <input #commandSequence placeholder="command sequence">
+    </label>
+    <button (click)="sendCommandSequence(commandSequence.value);">
+      Send command sequence
+    </button>
+    <label>Command sequence:
+      <input #command placeholder="command">
+    </label>
+    <button (click)="sendCommand(command.value);">
+      Send command sequence
+    </button>
+    <button (click)="reset();">
+      Reset Rover
+    </button>
+  </div>
+  <div>
+    <button (click)="rotateRover('north');">North</button>
+  </div>
+  <div>
+    <button (click)="rotateRover('west');">West</button>
+    <button (click)="rotateRover('east');">East</button>
+  </div>
+  <div>
+    <button (click)="rotateRover('south');">South</button>
+  </div>
+</div>
+
